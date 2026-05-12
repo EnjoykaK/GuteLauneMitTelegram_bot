@@ -4,33 +4,56 @@ from telegram._utils.types import ReplyMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackQueryHandler
+from dotenv import load_dotenv
+import os
+load_dotenv()
 import random
 
-TOKEN = "8788699632:AAECzdTbn-r7pesobmtN7hjSctVvfy1U6t8"
+TOKEN = os.getenv("TOKEN")
 
 async def button(update: Update, context:ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
+    keyboard = [
+        [InlineKeyboardButton("Witz", callback_data="joke")],
+        [InlineKeyboardButton("Kompliment", callback_data="compliment")],
+        [InlineKeyboardButton("Motivation", callback_data="motivation")]
+    ]
     if query.data == "joke":
         jokes = ["Warun kann ein Fahrrad nicht umfallen? Da es zwei Räder hat! :)",
         "Was ist orange und läuft durch den Wald? Eine Wanderine! :)",
         "Warum können Geister so schlecht lügen? Wiel sie durchschaut werden! :)"
         ]
-        await query.edit_message_text(random.choice(jokes))
-        
+        reply_markup = InlineKeyboardMarkup([
+            [InlineKeyboardButton("Witz", callback_data="joke")],
+            [InlineKeyboardButton("Kompliment", callback_data="compliment")],
+            [InlineKeyboardButton("Motivation", callback_data="motivation")]
+        ])
+        await query.message.reply_text(random.choice(jokes), reply_markup=reply_markup)
+
     elif query.data == "compliment":
         compliments = ["Du bist wie eine Sonnenschein! ;)", 
                        "Du bist großartig! ;)",
                        "Du bist ein seht guter Mensch! Weiss es! ;)"
                        ]
-        await query.edit_message_text(random.choice(compliments))
+        reply_markup = InlineKeyboardMarkup([
+            [InlineKeyboardButton("Witz", callback_data="joke")],
+            [InlineKeyboardButton("Kompliment", callback_data="compliment")],
+            [InlineKeyboardButton("Motivation", callback_data="motivation")]
+        ])
+        await query.message.reply_text(random.choice(compliments), reply_markup=reply_markup)
 
     elif query.data == "motivation":
         motivations = ["Du schaffst das!", 
                        "Gib nicht auf, du bist stärker als du denkst!", 
                        "Jeder Tag ist eine neue Chance, um deine Ziele zu erreichen! Schritt für schritt kommst du voran!"
                        ]
-        await query.edit_message_text(random.choice(motivations))
+        reply_markup = InlineKeyboardMarkup([
+            [InlineKeyboardButton("Witz", callback_data="joke")],
+            [InlineKeyboardButton("Kompliment", callback_data="compliment")],
+            [InlineKeyboardButton("Motivation", callback_data="motivation")]
+        ])
+        await query.message.reply_text(random.choice(motivations), reply_markup=reply_markup)
 
 async def start(update: Update, context: ContextTypes. DEFAULT_TYPE):
     keyboard = [
