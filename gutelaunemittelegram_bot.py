@@ -1,6 +1,3 @@
-print("Bot started")
-from telegram import Update
-from telegram._utils.types import ReplyMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackQueryHandler
@@ -8,6 +5,7 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 import random
+import asyncio
 
 TOKEN = os.getenv("TOKEN")
 
@@ -70,39 +68,11 @@ async def start(update: Update, context: ContextTypes. DEFAULT_TYPE):
             reply_markup=reply_markup
         )
 
-async def joke (update: Update, context: ContextTypes.DEFAULT_TYPE):
-    jokes = [
-        "Warun kann ein Fahrrad nicht umfallen? Da es zwei Räder hat! :)",
-        "Was ist orange und läuft durch den Wald? Eine Wanderine! :)",
-        "Warum können Geister so schlecht lügen? Wiel sie durchschaut werden! :)",
-    ]
-    await update.message.reply_text(random.choice(jokes))
-
-async def compliment (update: Update, context: ContextTypes.DEFAULT_TYPE):
-    compliments = [
-        "Du bist wie eine Sonnenschein! ;)",
-        "Du bist großartig! ;)",
-        "Du bist ein seht guter Mensch! Weiss es! ;)"
-    ]
-    await update.message.reply_text(random.choice(compliments))
-
-async def motivation (update: Update, context: ContextTypes.DEFAULT_TYPE):
-    motivations = [
-        "Du schaffst das!",
-        "Gib nicht auf, du bist stärker als du denkst!",
-        "Jeder Tag ist eine neue Chance, um deine Ziele zu erreichen! Schritt für schritt kommst du voran!"
-    ]
-    await update.message.reply_text(random.choice(motivations))
 
 app = ApplicationBuilder().token(TOKEN).build()
 app.add_handler(CommandHandler("start", start))
-app.add_handler(CommandHandler("joke", joke))
-app.add_handler(CommandHandler("compliment", compliment))
-app.add_handler(CommandHandler("motivation", motivation))
-app.add_handler(CommandHandler("help", help))
 app.add_handler(CallbackQueryHandler(button))
-print("Bot läuft")
-import asyncio
+
 asyncio.run(app.run_polling())
 
 
